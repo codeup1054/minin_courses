@@ -11,6 +11,8 @@ const ROW_COUNT = 5
 
 
 
+
+
 function chart(canvas,data) {
     const ctx = canvas.getContext('2d')
     canvas.style.width = WIDTH  + 'px'
@@ -18,6 +20,9 @@ function chart(canvas,data) {
     canvas.width = DPI_WIDTH
     canvas.height = DPI_HEIGHT
 
+    const [yMin,yMax] = computeBoundaries(data)
+
+    console.log(yMin,yMax)
 
     const step = VIEW_HEIGHT/ROW_COUNT
 
@@ -31,9 +36,9 @@ function chart(canvas,data) {
     {
         const y = step*i
 
-        ctx.fillText(DPI_HEIGHT-y ,5,y-10 +PADDING)
-        ctx.moveTo(0,y+PADDING)
-        ctx.lineTo(DPI_WIDTH,y+PADDING)
+        ctx.fillText(DPI_HEIGHT-y ,5,y-10 +PADDING )
+        ctx.moveTo(0,y+PADDING )
+        ctx.lineTo(DPI_WIDTH,y+PADDING )
     }
 
     ctx.stroke()
@@ -64,3 +69,22 @@ chart(document.getElementById('chart'),
     ]
 )
 
+function computeBoundaries(data)
+{
+    let min
+    let max
+
+    for (const [,y] of data)
+    {
+        if (typeof min != 'number' ) min = y
+        if (typeof max != 'number' ) max = y
+
+        if(min > y ) min = y
+        if(max < y ) max = y
+
+
+    }
+    console.log( [min,max])
+    return [min,max]
+
+}
